@@ -1,29 +1,13 @@
-// enemy starting x and potential y coordinates
-
-enemyX = -100;
-enemyY = [55, 150, 225];
-
-// player starting coordinates
-
-playerX = 200;
-playerY = 385;
-
-//setting number of lives and appending the variable to the top of the page
-
-function restartplayer() {
-    playerX = 200;
-    playerY = 385;
-};
-
-//restart the bugs form the left of the screen, while also changing the Y position
-
-function restartbug() {
-    this.x = -100;
-    this.y = enemyY[Math.round(Math.random()*2) ];
-};
+'use strict'
 
 // Enemies our player must avoid
 var Enemy = function() {
+
+    // enemy starting x and potential y coordinates
+
+    this.enemyX = -100;
+    this.enemyY = [55, 150, 225];
+
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -32,21 +16,21 @@ var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
 
     //sets each individual bug to the enemyX and one of 3 y's
-    this.x = enemyX;
-    this.y = enemyY[Math.round(Math.random()*2) ];
+    this.x = this.enemyX;
+    this.y = this.enemyY[Math.round(Math.random() * 2)];
 };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
     //the speed of the bugs
-    this.x = this.x + (dt * Math.random()*500);
+    this.x = this.x + Math.random()*15;
 
     //colliision mechanic
 
-    if (this.x - playerX < 40 && this.x - playerX > -40
-     && this.y - playerY <40 && this.y - playerY > -40) {
-        restartplayer();
+    if (this.x - player.x < 40 && this.x - player.x > -40 &&
+        this.y - player.y < 40 && this.y - player.y > -40) {
+        player.restart();
     };
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
@@ -54,9 +38,9 @@ Enemy.prototype.update = function(dt) {
 
     //reset enemy after exiting board
     if (this.x > 500) {
-        //restartbug();  //why isnt the stupid function not working
-        this.x = -100
-        this.y = enemyY[Math.round(Math.random()*2) ];
+        this.restart(); //why isnt the stupid function not working
+        //this.x = -100
+        //this.y = enemyY[Math.round(Math.random()*2) ];
     };
 };
 
@@ -65,23 +49,24 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+//restart bugs back to left
+Enemy.prototype.restart = function() {
+    this.x = -100;
+    this.y = this.enemyY[Math.round(Math.random() * 2)];
+};
+
 //creates the player class
 var Player = function() {
 
+    // player starting coordinates
+
+    this.playerX = 200;
+    this.playerY = 385;
     //picture of player
     this.sprite = 'images/char-boy.png';
     //sets location to global variables defined above
-    this.x = playerX;
-    this.y = playerY;
-};
-
-// updates the players position, dt is a time variable between ticks
-Player.prototype.update = function(dt) {
-    this.x = playerX;
-    this.y = playerY;
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+    this.x = this.playerX;
+    this.y = this.playerY;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -89,47 +74,56 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// updates the players position, dt is a time variable between ticks
+Player.prototype.update = function(dt) {
+    // You should multiply any movement by the dt parameter
+    // which will ensure the game runs at the same speed for
+    // all computers.
+};
+//setting number of lives and appending the variable to the top of the page
+
+Player.prototype.restart = function() {
+    this.x = 200;
+    this.y = 385;
+};
+
 // a switch that handles the arrow keys on a case by case basis
 Player.prototype.handleInput = function(key) {
-    switch(key) {
+    switch (key) {
         case 'up':
             //if player goes above Y axis at 30px (water)
-            if (playerY < 30) {
+            if (this.y < 30) {
                 //send player back to beginning
-                restartplayer();
+                this.restart();
                 //get element with 'winner' id from html file
-                element = document.getElementById("winner");
+                var element = document.getElementById("winner");
                 //write the phrase into the element selected above
                 element.innerHTML = 'Congratulations, you reached the water. You win!!';
-            }
-            else {
-                playerY = playerY - 90;
+            } else {
+                this.y = this.y - 90;
             }
             break;
         case 'down':
             //if player goes past 300px down
-            if (playerY > 380) {
+            if (this.y > 380) {
                 //send him back to the beginning
-                restartplayer();
-            }
-            else {
-                playerY = playerY + 90;
+                this.restart();
+            } else {
+                this.y = this.y + 90;
             }
             break;
         case 'left':
-            if (playerX < 30) {
-                restartplayer();
-            }
-            else {
-                playerX = playerX - 100;
+            if (this.x < 30) {
+                this.restart();
+            } else {
+                this.x = this.x - 100;
             }
             break;
         case 'right':
-            if (playerX > 350) {
-                restartplayer();
-            }
-            else {
-                playerX = playerX + 100;
+            if (this.x > 350) {
+                this.restart();
+            } else {
+                this.x = this.x + 100;
             }
             break;
     };
@@ -155,7 +149,7 @@ document.addEventListener('keyup', function(e) {
 });
 
 //initiate all 4 enemies objects
-var allEnemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
+var allEnemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy(), new Enemy()];
 
 //initiate the player object
 var player = new Player();

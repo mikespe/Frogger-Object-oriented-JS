@@ -4,9 +4,9 @@ A Frogger style game
 
 #Setup
 
-1download the zip file
-2extract all to a folder
-3open index.html in the browser
+1. download the zip file
+2. extract all to a folder
+3. open index.html in the browser
 
 #How
 

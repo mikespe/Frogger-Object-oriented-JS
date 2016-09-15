@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -7,6 +7,9 @@ var Enemy = function() {
 
     this.enemyX = -100;
     this.enemyY = [55, 150, 225];
+
+
+    this.speed = Math.random()*15;
 
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -24,14 +27,14 @@ var Enemy = function() {
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
     //the speed of the bugs
-    this.x = this.x + Math.random()*15;
 
+    this.x = this.x + this.speed;
     //colliision mechanic
 
     if (this.x - player.x < 40 && this.x - player.x > -40 &&
         this.y - player.y < 40 && this.y - player.y > -40) {
         player.restart();
-    };
+    }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -41,7 +44,7 @@ Enemy.prototype.update = function(dt) {
         this.restart(); //why isnt the stupid function not working
         //this.x = -100
         //this.y = enemyY[Math.round(Math.random()*2) ];
-    };
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -126,7 +129,7 @@ Player.prototype.handleInput = function(key) {
                 this.x = this.x + 100;
             }
             break;
-    };
+    }
 };
 
 // Now instantiate your objects.

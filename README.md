@@ -1,6 +1,6 @@
 #Summary
 
-A Frogger style game 
+A Frogger style game using Object oriented JavaScript as evidenced in app.js
 
 #Setup
 

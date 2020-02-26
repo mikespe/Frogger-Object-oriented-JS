@@ -102,7 +102,8 @@ Player.prototype.handleInput = function(key) {
                 var element = document.getElementById("winner");
                 //write the phrase into the element selected above
                 element.innerHTML = 'Congratulations, you reached the water. You win!!';
-                element.style = "margin-top: 41px;margin-bottom: -36px;"
+                element.setAttribute("style", "margin-top: 40px;");
+                element.setAttribute("style", "margin-bottom: -35px;");
             } else {
                 this.y = this.y - 90;
             }

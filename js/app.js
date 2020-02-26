@@ -152,6 +152,17 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
+document.addEventListener('click', function (event) {
+
+    // If the clicked element doesn't have the right selector, bail
+    if (event.target.matches('.arrow')) {
+        event.preventDefault();
+        console.log(event.target.id);
+        player.handleInput(event.target.id);
+    }
+
+}, false);
+
 //initiate all 4 enemies objects
 var allEnemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy(), new Enemy()];
 
